@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: markers-ui
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: leandro
+Implementation-Vendor-Id: br.com.springcloud
+Build-Jdk: 1.8.0_60
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+Main-Class: br.com.springcloud.ui.Application
+
