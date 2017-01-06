@@ -1,0 +1,9 @@
+---
+applications:
+- name: markers-ui-${random-word}
+  memory: 512M
+  instances: 1
+  path: target/markers-ui-0.0.1-SNAPSHOT.jar
+  services: [ marker-ws ]
+env:
+  SPRING_PROFILES_DEFAULT: cloud

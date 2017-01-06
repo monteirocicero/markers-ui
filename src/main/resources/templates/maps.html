@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>gmaps.js &mdash; the easiest way to use Google Maps</title>
+<script type=”text/javascript” src=”jquery.min.js” />
+<script type=”text/javascript” src=”gmaps.js” />
+<script type=”text/javascript”>
+    var map;
+    function loadResults(data) {
+        var items, markers_data = [];
+        if (data.length > 0) {
+            items = data;
+
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+
+                if (item.lat != undefined && item.lng != undefined) {
+                  var icon = 'http://foursquare.com/img/categories/food/default.png';
+
+                  markers_data.push({
+                    lat: item.lat,
+                    lng: item.lng,
+                    icon: {
+                      size: new google.maps.Size(32, 32),
+                      url: icon
+                    }
+                  });
+
+                }
+            }
+        }
+        map.addMarkers(markers_data);
+    }
+
+    function printResults(data) {
+      $('#foursquare-results').text(JSON.stringify(data));
+    }
+
+    $(document).on('click', '.pan-to-marker', function(e){
+      e.preventDefault();
+      var position, lat, lng, $index;
+      $index = $(this).data('marker-index');
+      position = map.markers[$index].getPosition();
+      lat = position.lat();
+      lng = position.lng();
+      map.setCenter(lat, lng);
+    });
+
+    $(document).ready(function(){
+      map = new GMaps({
+        div: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+      });
+
+
+      map.on('marker_added', function(marker){
+        var index = map.markers.indexOf(marker);
+        $('#results').append('<li><a href='#' class='pan-to-marker' data-marker-index='+ index +'>'+ markers.title + '</a></li>');
+
+        if (index == map.markers.length - 1) {
+          map.fitZoom();
+        }
+      });
+
+      var xhr = $.getJSON('/locations');
+      xhr.done(loadResults);
+    });
+</script>
+</head>
+<body>
+  <div id="body">
+    <h3>Working with JSON</h3>
+    <div class="row">
+      <div class="span11">
+        <div class="popin">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
